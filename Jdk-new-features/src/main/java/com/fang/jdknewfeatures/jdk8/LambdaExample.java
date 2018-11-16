@@ -1,11 +1,5 @@
 package com.fang.jdknewfeatures.jdk8;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.*;
-
 /**
  * @program: Exercise
  * @Date: 2018/11/13 16:19
@@ -13,7 +7,17 @@ import java.util.*;
  * @Description:
  */
 
+import com.fang.jdknewfeatures.util.bean.Person;
+
+import java.util.List;
+import java.util.function.Predicate;
+
 /**
+ * lambda表达式是java匿名函数的一种表达形式
+ * 对于只申明一个函数的接口，它提供了一个简单和简洁的方式让程序员编写匿名函数，
+ * 同时改善了Java集合框架库（collection），使得更加容易迭代、过滤一个集合，更加容易从另一个集合中提取数据。
+ *
+ *
  * Lambda 允许把函数作为一个方法的参数（函数作为参数传递进方法中）
  * <p>
  * lambda 表达式的语法格式如下：
@@ -21,6 +25,7 @@ import java.util.*;
  * 或
  * (parameters) ->{ statements; }
  * <p>
+ *
  * Lambda表达式的特征
  * 类型声明（可选）：可以不需要声明参数类型，编译器会识别参数值。
  * 参数圆括号（可选）：在单个参数时可以不使用括号，多个参数时必须使用。
@@ -28,69 +33,54 @@ import java.util.*;
  * 相对的，在使用大括号的情况下，则必须指明返回值。
  */
 public class LambdaExample {
-  private static List<People> peopleList = new ArrayList<People>();
-
-  static {
-    peopleList.add(new People("a", 17));
-    peopleList.add(new People("b", 16));
-    peopleList.add(new People("c", 19));
-    peopleList.add(new People("d", 15));
-  }
-
-  public static void fun1() {
-    //第一种，传统匿名Compartor接口排序
-    Collections.sort(peopleList, new Comparator<People>() {
-      @Override
-      public int compare(People o1, People o2) {
-        return o1.getAge().compareTo(o2.getAge());
-      }
-    });
-
-    System.out.println("" +  peopleList);
-
-    //1.声明式,不使用大括号，只可以写单条语句
-    Collections.sort(peopleList, (a, b) ->a.getAge().compareTo(b.getAge()));
-
-
-
-    //2.不声明式，使用大括号，可以写多条语句
-    Collections.sort(peopleList, (a, b) -> {
-      System.out.print("——————————————");
-      return a.getAge().compareTo(b.getAge());
-    });
-
-    System.out.println( peopleList);
-  }
-
-  public static void fun2() {
-//      //第三种，使用Lambda表达式调用类的静态方法
-//      Collections.sort(peopleList,(a,b)->People.sortByName(a,b));
-//      System.out.println("Lambda表达式调用静态方法："+peopleList);
-//
-//      //第四种，使用Lambda表达式调用类的实例方法
-//      Collections.sort(peopleList,(a,b)->new People().sortByAge(a,b));
-//      System.out.println("Lambda表达式调用实例方法:"+peopleList);
-  }
-
-  public void test3(){
-    List<Integer> nums = Arrays.asList(9,5,8,4,7,3,6,2,1);
-    nums.forEach(t-> System.out.println(t));
-  }
-
+  /**
+   * 这个小项目会涉及到三类人：
+   *
+   * Drivers：（司机）年龄>16
+   * Draftees：（士兵）年龄在18到25之间
+   * Pilots：（飞行员）年龄在23在65之间
+   * 现在我们有一份名单，名单里面有着三类人的相关信息，比如姓名、年龄、手机号、邮件号码、邮件地址等等，具体的定义看一参见Person类。我们的任务是给所有的司机打电话，给所有的士兵发邮件，给所有的飞行员送邮寄。（搞笑得很:)）
+   * @param args
+   */
   public static void main(String[] args) {
-    System.out.println("排序前：" + peopleList);
+    List<Person> list = Person.createShortList();
 
-    fun1();
+    Predicate<Person> allDrivers = p->p.getAge() >= 16;
+    Predicate<Person> allDraftees = p -> p.getAge() >= 18 && p.getAge() <= 25 && p.getGender() == Person.Gender.MALE;
+    Predicate<Person> allPilots = p -> p.getAge() >= 23 && p.getAge() <= 65;
+
+    System.out.println("calling all drivers");
+    phoneContacts(list, allDrivers);
+
+    System.out.println("emailing all draftees");
+    emailContacts(list, allDraftees);
+
+    System.out.println("mailing all pilots");
+    mailContacts(list, allPilots);
 
   }
 
-  @Data
-  @AllArgsConstructor
-  @NoArgsConstructor
-  static class People {
-    private String name;
-    private Integer age;
+  public static void phoneContacts(List<Person> personList, Predicate<Person> predicate){
+    personList.stream().filter(predicate).forEach(
+      p->System.out.println("Calling " + p.getGivenName() + " " + p.getSurName() + " age " + p.getAge() + " at " + p.getPhone())
+    );
+//    for(Person p :personList){
+//      if(predicate.test(p)){
+//        System.out.println("Calling " + p.getGivenName() + " " + p.getSurName() + " age " + p.getAge() + " at " + p.getPhone());
+//      }
+//    }
   }
+  public static void emailContacts(List<Person> personList, Predicate<Person> predicate){
+    personList.stream().filter(predicate).forEach(
+     p-> System.out.println("EMailing  " + p.getGivenName() + " " + p.getSurName() + " age " + p.getAge() + " at " + p.getPhone())
+    );
 
+  }
+  public static void mailContacts(List<Person> personList, Predicate<Person> predicate){
+    personList.stream().filter(predicate).forEach(
+     p-> System.out.println("Mailing  " + p.getGivenName() + " " + p.getSurName() + " age " + p.getAge() + " at " + p.getPhone())
+    );
+
+  }
 
 }
