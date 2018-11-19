@@ -66,10 +66,17 @@ public class FuncInterExample {
   }
 
   public static void testConsumer(){
+    String name1 = "";
+    String name2 = "12345";
+    Consumer<String> consumer = inputStr -> System.out.println(inputStr.isEmpty() ? "名字不能为空":"名字正常");
+
+    consumer.accept(name1);
+    consumer.accept(name2);
 
   }
 
   public static void main(String[] args) {
-    FuncInterExample.testPredicate();
+    FuncInterExample.testConsumer();
+
   }
 }
