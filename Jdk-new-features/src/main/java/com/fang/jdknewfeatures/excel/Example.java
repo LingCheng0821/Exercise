@@ -1,4 +1,4 @@
-package com.fang.jdknewfeatures.email;
+package com.fang.jdknewfeatures.excel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,11 +12,8 @@ public class Example {
 
 	public static void main(String[] args) throws IOException {
 		String dstExcelFilename = null;
-		dstExcelFilename = path + "/src/main/java/com/fang/ebcenter/util/excel/考勤分析报表.xlsx";
+		dstExcelFilename = path + "/考勤分析报表.xlsx";
 		test01(dstExcelFilename);
-
-		dstExcelFilename = path + "/src/main/java/com/fang/ebcenter/util/excel/打卡分析报表.xlsx";
-		test02(dstExcelFilename);
 	}
 
 	public static void test02(String dstExcelFilename) throws IOException {
@@ -71,24 +68,8 @@ public class Example {
 	public static void test01(String dstExcelFilename) throws IOException {
 		String sheetName = "考勤分析报表";
 		List<ExcelTitleCell> tableTitle = new ArrayList<>();
-		String[] heads = { "员工ID", "公司", "部门", "姓名", "状态", "公司Email", "身份证号",
-				// "考勤开始日期", "考勤结束日期",
-				"全勤天数", "出勤天数", "入离职缺勤天数", "迟到早退≤1小时次数", "迟到早退＞1小时次数", "实际旷工天数", "总旷工天数",
-				"病假", "事假", "年假", "婚假", "产假", "小产假", "调休", "产检", "丧假", "陪产假", "哺乳假", "因公外出", "出差",
-				"病假", "事假", "年假", "婚假", "产假", "小产假", "调休", "产检", "丧假", "陪产假", "因公外出", "出差",
-				//	"病假", "事假", "年假", "婚假", "产假", "小产假", "调休", "产检", "丧假", "陪产假", "哺乳假", "因公外出", "出差",
-				"工资补差", "餐补补差",
-				//	"上月补齐工作日天数", "本月预发工作日天数", "工资周期实际预发天数", 
-				"日均出勤小时数" };
-		String[] types = { "num", "string", "string", "string", "string", "string", "string",
-				//"num", "num",
-				"num", "0.00", "num", "num", "num", "0.00", "0.00",
-				"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00",
-				"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00",
-				//	"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00",
-				"0.00", "0.00",
-				//	"num", "num", "num", 
-				"0.00" };
+		String[] heads = { "分组", "城市","负责人", "城市","负责人","城市","负责人","胜出城市","领先比率" };
+		String[] types = { "num", "string", "string", "string", "string", "string", "string","string","0.00%"};
 		List<String> headList = Arrays.asList(heads);
 		List<String> typeList = Arrays.asList(types);
 		for (int j = 0; j < headList.size(); j++) {
@@ -99,12 +80,12 @@ public class Example {
 
 		ExcelTitleWriter<String> titleWriter = new ExcelTitleWriter<>();
 		ComplexExcelTitle complexExcelTitle = new ComplexExcelTitle();
-		complexExcelTitle.addTitleRow(0, Arrays.asList("统计日期：20170215～20170313    报表生成时间：2017-03-22"), null);
-		complexExcelTitle.addTitleRow(1,
-				Arrays.asList("员工ID", "公司", "部门", "姓名", "状态", "公司Email", "身份证号", "全勤天数", "出勤天数", "入离职缺勤天数", "迟到早退≤1小时次数", "迟到早退＞1小时次数", "实际旷工天数", "总旷工天数", "请假（周期内）", "销假", "工资补差", "餐补补差", "日均出勤小时数"),
-				"统计日期：20170215～20170313    报表生成时间：2017-03-22");
-		complexExcelTitle.addTitleRow(2, Arrays.asList("病假", "事假", "年假", "婚假", "产假", "小产假", "调休", "产检", "丧假", "陪产假", "哺乳假", "因公外出", "出差"), "请假（周期内）");
-		complexExcelTitle.addTitleRow(2, Arrays.asList("病假", "事假", "年假", "婚假", "产假", "小产假", "调休", "产检", "丧假", "陪产假", "因公外出", "出差"), "销假");
+		complexExcelTitle.addTitleRow(0, Arrays.asList("控股二手房租房销售管理中心"), null);
+		complexExcelTitle.addTitleRow(1, Arrays.asList("分组","A组", "B组", "C组", "暂时胜出方"), "控股二手房租房销售管理中心");
+		complexExcelTitle.addTitleRow( 2, Arrays.asList("城市","负责人"), "A组");
+		complexExcelTitle.addTitleRow( 2, Arrays.asList("城市","负责人"), "B组");
+		complexExcelTitle.addTitleRow( 2, Arrays.asList("城市","负责人"), "C组");
+		complexExcelTitle.addTitleRow(2, Arrays.asList("胜出城市","领先比率"), "暂时胜出方");
 		titleWriter.setComplexExcelTitle(complexExcelTitle);
 
 		ExcelSheet<String> sheet = new ExcelSheet<>(sheetName, tableTitle, data, titleWriter);

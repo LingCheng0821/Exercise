@@ -1,4 +1,4 @@
-package com.fang.jdknewfeatures.email;
+package com.fang.jdknewfeatures.excel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

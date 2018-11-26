@@ -49,8 +49,17 @@ public class StreamExample {
 
     // 重复key的情况下 简单的使用后者覆盖前者的
 
+    // list 转 map
     Map<String, People> listAdMap =  peopleList != null ? peopleList.stream().collect(Collectors.toMap(People::getName, Function.identity(), (key1,key2)->key2, HashMap::new)) : new HashMap<>();
 
+    // list 去重
+    List<String> collect = peopleList.stream().map(t -> t.getName()).distinct().collect(Collectors.toList());
+
+    // list 相同的getName 分为一组
+    List<List<People>> resList = collect.stream().map(t -> peopleList.stream().filter(c -> c.getName().equals(t)).collect(Collectors.toList())).collect(Collectors.toList());
+
+    // 里层 list 最长长度
+    int len = resList.stream().mapToInt(t -> t.size()).max().getAsInt();
   }
 
   public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.fang.jdknewfeatures.email;
+package com.fang.jdknewfeatures.excel;
 
 import org.apache.poi.ss.util.CellRangeAddress;
 
