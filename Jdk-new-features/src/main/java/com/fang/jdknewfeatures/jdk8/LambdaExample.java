@@ -7,9 +7,12 @@ package com.fang.jdknewfeatures.jdk8;
  * @Description:
  */
 
+import com.fang.jdknewfeatures.util.bean.People;
 import com.fang.jdknewfeatures.util.bean.Person;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.function.Predicate;
 
 /**
@@ -82,5 +85,30 @@ public class LambdaExample {
     );
 
   }
+
+
+  public void test(){
+    Runnable rq = new Runnable() {
+      @Override
+      public void run() {
+        System.out.println("Hello World!");
+      }
+    };
+
+    Runnable r2 = () -> System.out.println("Hello Lambda!");
+
+    TreeSet<People> ts = new TreeSet<>(new Comparator<People>() {
+      @Override
+      public int compare(People o1, People o2) {
+        return o1.getAge() - o2.getAge();
+      }
+    });
+
+    TreeSet<People> ts1 = new TreeSet<>(Comparator.comparingInt(People::getAge));
+    
+  }
+
+
+
 
 }

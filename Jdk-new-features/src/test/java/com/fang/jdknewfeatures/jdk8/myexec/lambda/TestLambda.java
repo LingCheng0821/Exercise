@@ -1,11 +1,15 @@
-package com.fang.jdknewfeatures.jdk8;
+package com.fang.jdknewfeatures.jdk8.myexec.lambda;
 
+import com.fang.jdknewfeatures.util.bean.MathOperation;
+import com.fang.jdknewfeatures.util.bean.Person;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * @program: Exercise
@@ -15,6 +19,9 @@ import java.util.List;
  */
 
 public class TestLambda {
+
+  List<Person> list = Person.createShortList();
+
   //4-1 Runnable Lambda
   @Test
   public void test1(){
@@ -31,6 +38,15 @@ public class TestLambda {
 
     r1.run();
     r2.run();
+
+
+    /////////////////////////////////
+    Consumer<String> con = (a) -> System.out.println(a);
+    con.accept("xingxingdianting");
+
+    /////////////////////////////////
+    MathOperation add = (a, b) -> a + b;
+    System.out.println(add.operate(2, 3));
   }
 
   //Comparator Lambda
@@ -57,8 +73,21 @@ public class TestLambda {
     System.out.println(nums);
   }
 
+
+
   @Test
-  public void test4(){
+  public void test4() {
+
+    list.forEach(System.out::println);
+
+    // 1
+    list.stream()
+     .filter(p -> p.getAge() >= 23 && p.getAge() <= 65)
+     .forEach(System.out::println);
+
+    // 2
+    Predicate<Person> allPilots = p -> p.getAge() >= 23 && p.getAge() <= 65;
+    list.stream().filter(allPilots).limit(2).forEach(System.out::println);
 
   }
 }

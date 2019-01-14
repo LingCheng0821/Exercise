@@ -20,6 +20,10 @@ public class People {
   private String name;
   private Integer age;
 
+  public People(Integer age) {
+    this.age = age;
+  }
+
   public static int sortByName(People A , People B ){
     return A.getName().compareTo(B.getName());
   }
@@ -34,6 +38,9 @@ public class People {
     peopleList.add(new People("b",16));
     peopleList.add(new People("c",19));
     peopleList.add(new People("d",15));
+    peopleList.add(new People("f",18));
+    peopleList.add(new People("g",18));
+    peopleList.add(new People("e",18));
     return peopleList;
   }
 }
